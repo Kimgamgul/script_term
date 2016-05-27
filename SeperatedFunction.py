@@ -1,36 +1,70 @@
 # -*- coding: utf-8 -*-
-from xml.dom.minidom import parse
+from xml.dom.minidom import parse,parseString
+from xml.etree import ElementTree
 from http.client import HTTPConnection
-
-##global
-conn = None
-
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import urllib
+import http.client
+xmlFD = -1
+BooksDoc = None
 class Functions:
-    def __init__(self,Name,regKey):
-        self.Name = Name
-      
+    #이 함수는 파일에서 불러오기용  
+    def __init__(self,Name,regKey,**items):
+        self.conn = None
         #두개는 생성자 오버로딩으로 regkey가 있다면
         #reg키를 넣는다.
+        self.fileName = Name
         self.regKey = regKey
         #openAPI에서 필요한 URL을 만들기 위해서 diction형태로 초기화할때 넣어준다.
+        self.items = items
+        
+        
+    
     def userURIBuilder(self):
-        str = "http://"+ self.Name + self.regKey
-        return str
-        
-    def connectOpenAPIServer(self):
-        global conn
-        conn = HTTPConnection(self.Name)
-        
+        str = "http://"+self.fileName +"?"+"ServiceKey="+self.regKey+"&"
+        for key in self.items.keys():
+            str += key + "=" + self.items[key] + "&"
+        return str[0:len(str)-1]
+    def loadFromFile(self):
+        global xmlFD,BooksDoc
+        try:
+            xmlFD = open(self.fileName)
+        except IOError:
+            print("invalid file name or path")
+        else:
+            try:
+                dom = parse(xmlFD)
+            except Exception:
+                print("loadingFail!!")
+            else:
+                print("XML Document loading complete")
+                self.dom = dom
+                return dom
+            return None
+
     def loadFromWeb(self):
-        if conn == None:
-            self.connectOpenAPIServer()
+        if self.conn == None:
+            self.conn = HTTPConnection(self.fileName)
         url = self.userURIBuilder()
-        conn.request("GET",url)
-        req = conn.getresponse()
+        print(url)
+        self.conn.request("GET",url)
+        req = self.conn.getresponse()
         print(req.status)
         if int(req.status) == 200:
             print("download Complete!")
         else:
             print("API Call Failed")
             return None
-            
+    #이거수정하기
+    def extractBookData(self,strXml):
+        tree = ElementTree.fromstring(strXml)
+        print (strXml)
+        # Book 엘리먼트를 가져옵니다.
+        itemElements = tree.getiterator("item")  # return list type
+        print(itemElements)
+        for item in itemElements:
+            isbn = item.find("isbn")
+            strTitle = item.find("title")
+            print (strTitle)
+            if len(strTitle.text) > 0 :
+                return {"ISBN":isbn.text,"title":strTitle.text}

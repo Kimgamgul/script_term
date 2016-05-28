@@ -3,7 +3,6 @@ from xml.dom.minidom import parse,parseString
 from xml.etree import ElementTree
 from http.client import HTTPConnection
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import urllib
 import http.client
 xmlFD = -1
 BooksDoc = None
@@ -50,22 +49,23 @@ class Functions:
                 self.dom = dom
                 return dom
             return None
-    def extractBookData(self):
+    def extractBookData(self,treename,*itemName):
         tree = ElementTree.fromstring(self.req.read())
         #print(self.req.read())        
         # Book 엘리먼트를 가져옵니다.
-        itemElements = tree.getiterator("item")  # return list type
+        itemElements = tree.getiterator(treename)  # return list type
         
         print(itemElements)
         for item in itemElements:
-           content = item.find("content")
-           countyEnName = item.find("countryEnName")
-           country = item.find("countryName")
-           strTitle = item.find("id")
-           wrtDt = item.find("wrtDt")
+            ls = []
+            for x in itemName:
+                ls.append(item.find(x))
            #print (strTitle)
-           if len(strTitle.text) > 0 :
-               print(strTitle.text,content.text)
+            for x in ls:
+                if len(x.text) >0:
+                    print(x.text,end = " ")
+            print("")
+
     def loadFromWeb(self):
         if self.conn == None:
             self.conn = HTTPConnection(self.fileName)

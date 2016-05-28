@@ -23,13 +23,14 @@ class ExcelImport:
             self.datas.append(data)
     
     def printInfo(self):#정보 출력하기
-        for x in range(0,self.maxRow):
+        for x in range(0,self.maxRow-1):
             for y in range(0,self.maxCol):
                 print("{0}:{1}".format(self.keys[y],self.datas[x][y]), end = ' ')
                 
     def filterPrint(self,idx,Contents): #정보가 몇번째 정보인지 알고 비교할 내용을 넣어주면 자동으로 필터링하여 출력
-        for x in range(0,self.maxRow):
+        for x in range(0,self.maxRow-1):
             for y in range(0,self.maxCol):
                 if self.datas[x][idx] == Contents:
                     print("{0}:{1}".format(self.keys[y],self.datas[x][y]), end = ' ')
-  
+            if self.datas[x][idx] == Contents:
+                print("")

@@ -50,7 +50,22 @@ class Functions:
                 self.dom = dom
                 return dom
             return None
-
+    def extractBookData(self):
+        tree = ElementTree.fromstring(self.req.read())
+        #print(self.req.read())        
+        # Book 엘리먼트를 가져옵니다.
+        itemElements = tree.getiterator("item")  # return list type
+        
+        print(itemElements)
+        for item in itemElements:
+           content = item.find("content")
+           countyEnName = item.find("countryEnName")
+           country = item.find("countryName")
+           strTitle = item.find("id")
+           wrtDt = item.find("wrtDt")
+           #print (strTitle)
+           if len(strTitle.text) > 0 :
+               print(strTitle.text,content.text)
     def loadFromWeb(self):
         if self.conn == None:
             self.conn = HTTPConnection(self.fileName)
@@ -58,23 +73,12 @@ class Functions:
         print(url)
         
         self.conn.request("GET",url)
-        req = self.conn.getresponse()
-        print(req.status)
-        if int(req.status) == 200:
+        self.req = self.conn.getresponse()
+        print(self.req.status)
+        if int(self.req.status) == 200:
            print("download Complete!")
         else:
            print("API Call Failed")
            return None
     #이거수정하기
-    def extractBookData(self,strXml):
-        tree = ElementTree.fromstring(strXml)
-        print (strXml)
-        # Book 엘리먼트를 가져옵니다.
-        itemElements = tree.getiterator("item")  # return list type
-        print(itemElements)
-        for item in itemElements:
-            isbn = item.find("isbn")
-            strTitle = item.find("title")
-            print (strTitle)
-            if len(strTitle.text) > 0 :
-                return {"ISBN":isbn.text,"title":strTitle.text}
+   

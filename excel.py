@@ -34,3 +34,25 @@ class ExcelImport:
                     print("{0}:{1}".format(self.keys[y],self.datas[x][y]), end = ' ')
             if self.datas[x][idx] == Contents:
                 print("")
+
+    def loadSome(self,idx):
+        self.wb = load_workbook(self.filename)
+        sheetList = self.wb.get_sheet_names()
+        self.sheet = self.wb.get_sheet_by_name(sheetList[0])
+        self.maxCol = self.sheet.max_column
+        self.maxRow = idx
+        self.keys = []
+        self.datas = []
+        for x in range(1,self.sheet.max_column+1):
+            self.keys.append(self.sheet.cell(row = 1, column = x).value)
+        for x in range(2,self.sheet.max_row+1):
+            data = []            
+            for y in range(1,self.sheet.max_column+1):
+                data.append(self.sheet.cell(row = x,column = y).value)
+            self.datas.append(data)
+    
+    def printSome(self,idx):
+        for x in range(0, idx):
+            for y in range(0,self.maxCol):
+                print("{0}:{1}".format(self.keys[y],self.datas[x][y]), end = ' ')
+            print("")

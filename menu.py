@@ -434,7 +434,26 @@ def printToilet(localNum):
     print("화장실 정보입니다.")
     e = ExcelImport("toilet2.xlsx")
     e.loadFile()
-    e.printInfo()
+    if localNum == 0:#서울
+        e.filterPrint2(2,"서울")
+    elif localNum == 1:#경기
+        e.filterPrint2(2,"경기")
+    elif localNum == 2:#인천
+        e.filterPrint2(2,"인천")
+    elif localNum == 3:#강원도
+        e.filterPrint2(2,"강원")    
+    elif localNum == 4:#충청도
+        e.filterPrint2(2,"충청")
+        e.filterPrint2(2,"대전")
+    elif localNum == 5:#전라도   
+        e.filterPrint2(2,"전라")
+        e.filterPrint2(2,"광주")
+    elif localNum == 6:#경상도
+        e.filterPrint2(2,"경상")
+        e.filterPrint2(2,"부산")
+        e.filterPrint2(2,"대구")
+        e.filterPrint2(2,"울산")
+    
 def printWifi(localNum):
     print("와이파이 정보입니다.")
     e = ExcelImport("wifi.xlsx")

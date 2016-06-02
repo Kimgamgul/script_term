@@ -110,12 +110,12 @@ def printWorldBasicInfo(save):
     f.extractcountryData("item",save,"basic")
 
  
-def printWorldWarning(save):
-    print("세계 여행 경보 입니다.")
-    f = Functions("apis.data.go.kr","/1262000/TravelWarningService/getTravelWarningList","j%2Bbq5FUNW828jPaqGs8emef8UinsgGbIyBjQT4ZaXSyhgAj8%2B2QqnTzHYZiG52%2BprkbQfeOY0JSWYvB01wqQ8Q%3D%3D&numOfRows=999",)
-    f.userURIBuilder()
-    f.loadFromWeb()
-    f.extractcountryData("item",save,"attention")
+#def printWorldWarning(save):
+#    print("세계 여행 경보 입니다.")
+#    f = Functions("apis.data.go.kr","/1262000/TravelWarningService/getTravelWarningList","j%2Bbq5FUNW828jPaqGs8emef8UinsgGbIyBjQT4ZaXSyhgAj8%2B2QqnTzHYZiG52%2BprkbQfeOY0JSWYvB01wqQ8Q%3D%3D&numOfRows=999",)
+#    f.userURIBuilder()
+#    f.loadFromWeb()
+#    f.extractFilterData("item","wrtDt")
 
 
 def printWorldSafty(save):
@@ -123,7 +123,7 @@ def printWorldSafty(save):
     f = Functions("apis.data.go.kr","/1262000/CountrySafetyService/getCountrySafetyList","j%2Bbq5FUNW828jPaqGs8emef8UinsgGbIyBjQT4ZaXSyhgAj8%2B2QqnTzHYZiG52%2BprkbQfeOY0JSWYvB01wqQ8Q%3D%3D&numOfRows=999",)
     f.userURIBuilder()
     f.loadFromWeb()
-    f.extractcountryData("item",save,"content")
+    f.saveContent(save)
     
 def printClothes(save):
     e = ExcelImport("clothes.xlsx")

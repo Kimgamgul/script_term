@@ -15,6 +15,7 @@ overseasAmerica = []
 overseasAmericad = dict()
 overseasAfrica = []
 overseasAfricad = dict()
+
 ##--------------------------------------------
 
 class Functions:
@@ -42,6 +43,7 @@ class Functions:
         for key in self.items.keys():
             str += key + "=" + self.items[key] + "&"
         return str[0:len(str)-1]
+        
     def loadFromFile(self):
         global xmlFD,BooksDoc
         try:
@@ -89,7 +91,10 @@ class Functions:
             for x in ls:
                 if len(x.text) >0:
                     print(x.text,end = " ")
-            print("")        
+            print("")   
+##------------------------------------------------------------------------------
+
+            
 ##------------------------------------------------------------------------------
     def extractcountryData(self,treename,country,*itemName):
         tree = ElementTree.fromstring(self.req.read())
@@ -108,7 +113,32 @@ class Functions:
                         print(x.text,end = " ")
                 print("")        
                 
-##------------------------------------------------------------------------------           
+##------------------------------------------------------------------------------          
+                
+    def saveContent(self,country):
+
+        savecontentc = []
+        datec = []    
+        tree = ElementTree.fromstring(self.req.read())
+        itemElements = tree.getiterator("item")
+        for item in itemElements:
+            coun = item.find("countryName")
+            content = item.find("content")
+            date = item.find("wrtDt")
+            if coun != None:
+                if coun.text == country:
+                    savecontentc.append(content.text)
+                    datec.append(date.text)
+             
+        for x in range(len(savecontentc)):
+            print("----------------------------------------")
+            print("내용: ",savecontentc[x],end = " ")
+            print("")
+            print("업데이트 날짜: ",datec[x],end = " ")
+            print("")
+           
+            
+                
     def saveOverseas(self):
         tree = ElementTree.fromstring(self.req.read())
         itemElements = tree.getiterator("item")

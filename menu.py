@@ -79,9 +79,8 @@ def selectWorldMenu(save):
     print("All In Trip")
     print("원하는 기능을 선택해 주세요")    
     print("1.기본정보")
-    print("2.여행경보")
-    print("3.안전정보")
-    print("4.옷차림정보")
+    print("2.안전정보")
+    print("3.옷차림정보")
     print("-------------------------------------------")
     MenuComm = int(input()) #메뉴 번호 입력
     if 0< MenuComm and MenuComm<5:
@@ -94,10 +93,8 @@ def selectWorldFunction(MenuComm,save):
     if MenuComm == 0:
         printWorldBasicInfo(save)
     elif MenuComm == 1:
-        printWorldWarning(save)
-    elif MenuComm == 2:
         printWorldSafty(save)
-    elif MenuComm == 3:
+    elif MenuComm == 2:
         printClothes(save)
         
 #==============================================================================
@@ -108,15 +105,6 @@ def printWorldBasicInfo(save):
     f.userURIBuilder()
     f.loadFromWeb()
     f.extractcountryData("item",save,"basic")
-
- 
-#def printWorldWarning(save):
-#    print("세계 여행 경보 입니다.")
-#    f = Functions("apis.data.go.kr","/1262000/TravelWarningService/getTravelWarningList","j%2Bbq5FUNW828jPaqGs8emef8UinsgGbIyBjQT4ZaXSyhgAj8%2B2QqnTzHYZiG52%2BprkbQfeOY0JSWYvB01wqQ8Q%3D%3D&numOfRows=999",)
-#    f.userURIBuilder()
-#    f.loadFromWeb()
-#    f.extractFilterData("item","wrtDt")
-
 
 def printWorldSafty(save):
     print("세계 현지 안전 정보입니다.")
